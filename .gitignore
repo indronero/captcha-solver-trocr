@@ -15,3 +15,6 @@ hf_cache/
 .datasets/
 .output/
 .samples/
+
+# trained models
+model/trocr_finetuned_captcha_model/
