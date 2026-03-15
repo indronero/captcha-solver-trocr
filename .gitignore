@@ -3,18 +3,28 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
-*.pyc.*
 *.log
+
+# Environments
+venv/
+.env
 
 # HuggingFace cache
 .cache/
 huggingface/
 hf_cache/
 
-# Datasets and Output
-.datasets/
-.output/
-.samples/
+# Datasets
+datasets/*
+!datasets/.gitkeep
 
-# trained models
-model/trocr_finetuned_captcha_model/
+# Samples
+samples/*
+!samples/.gitkeep
+
+# Model artifacts
+model/trocr_finetuned_captcha_model/*
+!model/trocr_finetuned_captcha_model/.gitkeep
+
+# Output
+output/
