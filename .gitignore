@@ -22,7 +22,6 @@ hf_cache/
 venv/
 .venv/
 .env
-.env.*
 
 # =========================
 # MLflow
