@@ -7,7 +7,7 @@ bitsandbytes
 peft
 albumentations
 scipy==1.13.1
-numpy==1.24.4
+numpy==1.26.4
 pillow
 evaluate
 jiwer
@@ -17,3 +17,5 @@ xxhash
 huggingface-hub
 sentencepiece
 protobuf
+mlflow
+torchvision

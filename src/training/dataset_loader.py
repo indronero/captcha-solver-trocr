@@ -1,74 +1,59 @@
+# src\training\dataset_loader.py
+
 import os
 import random
 import pandas as pd
 from datasets import Dataset
-from sklearn.model_selection import train_test_split
-
-COMMON_SUBDIRS = ['', 'images', 'train', 'data', 'sample', 'samples', 'captchas']
+from src.config import IMAGE_EXTENSIONS
 
 random.seed(42)
 
-def load_datasets(dataset_paths, num_examples):
+
+def load_datasets(dataset_paths, num_examples=None):
 
     all_data = []
 
-    for i, dataset_path in enumerate(dataset_paths, 1):
+    for dataset_path in dataset_paths:
 
         if not os.path.exists(dataset_path):
-            continue
+            raise ValueError(f"Dataset path does not exist: {dataset_path}")
 
-        root_len = len(os.listdir(dataset_path))
+        dataset_name = os.path.basename(dataset_path)
 
-        images_dir = None
+        image_files = sorted([
+            f for f in os.listdir(dataset_path)
+            if f.lower().endswith(IMAGE_EXTENSIONS)
+        ])
 
-        if root_len >= 1:
-            images_dir = dataset_path
-        else:
-            for sub in COMMON_SUBDIRS:
-                candidate = os.path.join(dataset_path, sub)
-                if os.path.exists(candidate) and len(os.listdir(candidate)) > 0:
-                    images_dir = candidate
-                    break
-
-        if images_dir is None:
-            continue
-
-        image_files = [
-            f for f in os.listdir(images_dir)
-            if f.lower().endswith((".png",".jpg",".jpeg"))
-        ]
-
-        dataset_data = []
+        if len(image_files) == 0:
+            raise ValueError(f"No images found in dataset: {dataset_path}")
 
         for filename in image_files:
 
-            path = os.path.join(images_dir, filename)
-
+            path = os.path.join(dataset_path, filename)
             text = os.path.splitext(filename)[0]
 
-            dataset_data.append({
+            all_data.append({
                 "image_path": path,
                 "text": text,
-                "source": f"dataset_{i}"
+                "source": dataset_name
             })
 
-        all_data.extend(dataset_data)
+    if len(all_data) == 0:
+        raise ValueError("No valid data found across all datasets.")
 
     df = pd.DataFrame(all_data)
 
-    num_sources = df["source"].nunique()
+    # OPTIONAL BALANCING
+    if num_examples is not None:
 
-    samples_per_source = num_examples // num_sources
+        num_sources = df["source"].nunique()
+        samples_per_source = num_examples // num_sources
 
-    balanced_df = df.groupby("source").apply(
-        lambda g: g.sample(n=min(samples_per_source, len(g)), random_state=42)
-    ).reset_index(drop=True)
+        df = df.groupby("source", group_keys=False).apply(
+            lambda g: g.sample(n=min(samples_per_source, len(g)), random_state=42)
+        ).reset_index(drop=True)
 
-    df = balanced_df.sample(frac=1, random_state=42).reset_index(drop=True)
+    df = df.sample(frac=1, random_state=42).reset_index(drop=True)
 
-    train_df, val_df = train_test_split(df, test_size=0.2, random_state=42)
-
-    train_dataset = Dataset.from_pandas(train_df)
-    val_dataset = Dataset.from_pandas(val_df)
-
-    return train_dataset, val_dataset
+    return Dataset.from_pandas(df)

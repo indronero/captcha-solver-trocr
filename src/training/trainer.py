@@ -1,3 +1,5 @@
+# src\training\trainer.py
+
 import torch
 import numpy as np
 from evaluate import load
@@ -28,7 +30,7 @@ def compute_metrics(eval_pred):
     return {"cer": cer}
 
 
-
+# THIS WAS MISSING
 def data_collator(features):
 
     pixel_values = torch.stack([f["pixel_values"] for f in features])
@@ -51,9 +53,9 @@ def build_trainer(model, train_dataset, val_dataset, output_dir):
         per_device_train_batch_size=16,
         per_device_eval_batch_size=16,
 
-        gradient_accumulation_steps=2,
+        gradient_accumulation_steps=8,
 
-        num_train_epochs=10,
+        num_train_epochs=1,
 
         eval_strategy="epoch",
         save_strategy="epoch",
@@ -77,6 +79,7 @@ def build_trainer(model, train_dataset, val_dataset, output_dir):
         gradient_checkpointing=True,
 
         generation_max_length=10,
+
         generation_num_beams=4,
 
         load_best_model_at_end=True,
@@ -100,7 +103,6 @@ def build_trainer(model, train_dataset, val_dataset, output_dir):
 
         compute_metrics=compute_metrics,
 
-        # CRITICAL (same as Kaggle)
         data_collator=data_collator
     )
 

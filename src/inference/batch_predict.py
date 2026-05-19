@@ -1,9 +1,11 @@
+# src\inference\batch_predict.py
+
 import os
 from src.inference.predictor import predict
 from src.config import IMAGE_EXTENSIONS
 
 
-def batch_predict(folder):
+def batch_predict(folder, alias="champion", model_uri=None):
 
     results = []
 
@@ -14,7 +16,7 @@ def batch_predict(folder):
 
         path = os.path.join(folder, file)
 
-        prediction = predict(path)
+        prediction = predict(path, alias=alias, model_uri=model_uri)
 
         label = os.path.splitext(file)[0]
 
