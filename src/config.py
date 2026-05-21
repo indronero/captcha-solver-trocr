@@ -44,6 +44,7 @@ TRAIN_CACHE = "cache/train_cache.arrow"
 VAL_CACHE = "cache/val_cache.arrow"
 
 MODEL_BASE_DIR = "model/trocr_finetuned_captcha_model"
+BOOTSTRAP_MODEL = "model/trocr_finetuned_captcha_model/v1"
 
 MAX_LENGTH = 10
 NUM_BEAMS = 4
@@ -59,5 +60,9 @@ MLFLOW_EXPERIMENT = "captcha_ocr"
 MLFLOW_TRACKING_URI = "http://127.0.0.1:5000"
 
 REGISTERED_MODEL_NAME = "captcha_ocr_model"
+
+MLRUNS_DIR = "mlruns"
+
+MLFLOW_DB = "mlflow.db"
 
 # To run : mlflow server --backend-store-uri sqlite:///mlflow.db --default-artifact-root ./mlruns --host 0.0.0.0 --port 5000 --allowed-hosts "*"

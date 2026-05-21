@@ -1,5 +1,6 @@
 # src\evaluation\evaluation_pipeline.py
 
+import mlflow
 from mlflow import MlflowClient
 from datetime import datetime
 

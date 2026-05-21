@@ -1,5 +1,6 @@
 # src\evaluation\promote_model.py
 
+import mlflow
 from mlflow import MlflowClient
 
 from src.config import REGISTERED_MODEL_NAME, MLFLOW_TRACKING_URI

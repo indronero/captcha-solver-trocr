@@ -8,26 +8,13 @@ import mlflow.transformers
 from datetime import datetime
 
 from mlflow import MlflowClient
+from src.config import BOOTSTRAP_MODEL, MLFLOW_TRACKING_URI, MLFLOW_EXPERIMENT, REGISTERED_MODEL_NAME, MLRUNS_DIR, MLFLOW_DB
+
 
 from transformers import (
     VisionEncoderDecoderModel,
     TrOCRProcessor
 )
-
-# =========================
-# CONFIG
-# =========================
-
-EXPERIMENT_NAME = "captcha_ocr"
-
-REGISTERED_MODEL_NAME = "captcha_ocr_model"
-
-MODEL_PATH = "model/trocr_finetuned_captcha_model/v1"
-
-MLRUNS_DIR = "mlruns"
-
-MLFLOW_DB = "mlflow.db"
-
 
 # =========================
 # CLEAN OLD MLFLOW FILES
@@ -45,9 +32,8 @@ if os.path.exists(MLFLOW_DB):
 # =========================
 # SET EXPERIMENT
 # =========================
-
-mlflow.set_experiment(EXPERIMENT_NAME)
-
+mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
+mlflow.set_experiment(MLFLOW_EXPERIMENT)
 
 # =========================
 # START RUN
@@ -112,7 +98,7 @@ Source:
 - Local pretrained checkpoint
 
 Model path:
-- {MODEL_PATH}
+- {BOOTSTRAP_MODEL}
 
 Git branch:
 - {git_branch}
@@ -129,11 +115,11 @@ Timestamp:
     print("Loading local v1 model...")
 
     model = VisionEncoderDecoderModel.from_pretrained(
-        MODEL_PATH
+        BOOTSTRAP_MODEL
     )
 
     processor = TrOCRProcessor.from_pretrained(
-        MODEL_PATH
+        BOOTSTRAP_MODEL
     )
 
     # =========================
@@ -282,7 +268,7 @@ client.set_model_version_tag(
     REGISTERED_MODEL_NAME,
     version,
     "bootstrap_model_path",
-    MODEL_PATH
+    BOOTSTRAP_MODEL
 )
 
 client.set_model_version_tag(
@@ -372,7 +358,7 @@ Source:
 - Local pretrained model
 
 Path:
-- {MODEL_PATH}
+- {BOOTSTRAP_MODEL}
 
 Run ID:
 - {run.info.run_id}
