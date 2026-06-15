@@ -1,0 +1,30 @@
+name: Sync Champion To HF
+
+on:
+  workflow_dispatch:
+
+jobs:
+
+  push-model:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.cpu.txt
+
+      - name: Push Champion To HF
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_MODEL_ID: ${{ secrets.HF_MODEL_ID }}
+        run: |
+          python scripts/push_to_hf.py

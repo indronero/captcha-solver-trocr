@@ -19,3 +19,10 @@ sentencepiece
 protobuf
 mlflow
 torchvision
+fastapi
+uvicorn
+prometheus-client
+pytest
+httpx
+python-multipart
+prometheus-fastapi-instrumentator

@@ -1,0 +1,52 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual env
+.venv/
+venv/
+
+# Git
+.git/
+.gitignore
+
+# Environment
+.env
+
+# MLflow
+mlruns/
+mlflow.db
+
+# Datasets
+datasets/
+
+# Models
+model/
+
+# Cache
+cache/
+.cache/
+huggingface/
+hf_cache/
+.huggingface/
+
+# Monitoring data
+prometheus_data/
+grafana_data/
+
+# Pytest
+.pytest_cache/
+coverage.xml
+htmlcov/
+
+# VSCode
+.vscode/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db

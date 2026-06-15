@@ -15,6 +15,17 @@ from fastapi import (
     HTTPException
 )
 
+import time
+
+from prometheus_fastapi_instrumentator import (
+    Instrumentator
+)
+
+from src.monitoring.metrics import (
+    REQUEST_COUNT,
+    REQUEST_LATENCY
+)
+
 from PIL import Image
 
 from huggingface_hub import login
@@ -156,7 +167,7 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-
+Instrumentator().instrument(app).expose(app)
 # =========================
 # HEALTH CHECK
 # =========================
@@ -194,6 +205,10 @@ def model_info():
 async def predict(
     file: UploadFile = File(...)
 ):
+
+    start_time = time.time()
+
+    REQUEST_COUNT.inc()
 
     try:
 
@@ -272,6 +287,10 @@ async def predict(
         )[0]
 
         print("Prediction:", text)
+
+        REQUEST_LATENCY.observe(
+            time.time() - start_time
+        )
 
         return {
             "prediction": text,
