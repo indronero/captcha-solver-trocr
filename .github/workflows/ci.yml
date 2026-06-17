@@ -32,6 +32,10 @@ jobs:
           python -m compileall src
 
       - name: Run tests
+        env:
+          HF_MODEL_ID: ${{ secrets.HF_MODEL_ID }}
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_MODEL_REVISION: ${{ secrets.HF_MODEL_REVISION }}
         run: |
           PYTHONPATH=. pytest tests
 
