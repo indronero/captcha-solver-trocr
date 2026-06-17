@@ -1,4 +1,4 @@
-# tests/test_inference.py
+# tests/test_training_smoke.py
 
 from src.training.dataset_loader import load_datasets
 
