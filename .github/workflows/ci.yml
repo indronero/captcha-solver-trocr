@@ -37,19 +37,6 @@ jobs:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
           HF_MODEL_REVISION: ${{ secrets.HF_MODEL_REVISION }}
         run: |
-          if [ -z "$HF_MODEL_ID" ]; then
-            echo "HF_MODEL_ID EMPTY"
-            exit 1
-          else
-            echo "HF_MODEL_ID PRESENT"
-          fi
-
-          if [ -z "$HF_TOKEN" ]; then
-            echo "HF_TOKEN EMPTY"
-            exit 1
-          else
-            echo "HF_TOKEN PRESENT"
-          fi
           PYTHONPATH=. pytest tests
 
       - name: Docker Build Test
