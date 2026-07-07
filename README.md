@@ -1,3 +1,15 @@
+---
+title: Captcha Solver Api
+emoji: 🤖
+colorFrom: purple
+colorTo: gray
+sdk: docker
+app_port: 7860
+pinned: false
+license: mit
+short_description: Fine Tuned TrOCR CAPTCHA OCR API with FastAPI, CI/CD & MLOps
+---
+
 # TrOCR CAPTCHA Solver (MLOps)
 
 Production-grade CAPTCHA OCR system built using Microsoft's TrOCR architecture with a complete MLOps workflow including:
