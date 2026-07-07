@@ -1,10 +1,16 @@
 name: Deploy API
 
 on:
-  workflow_run:
-    workflows: ["CI"]
-    types:
-      - completed
+
+  # GitHub only triggers workflow_run when this workflow exists on the default branch.
+  # workflow_run:
+  #   workflows: ["CI"]
+  #   types:
+  #     - completed
+
+  push:
+    branches:
+      - feature/mlops-upgrade
 
   workflow_dispatch:
 
@@ -12,9 +18,11 @@ jobs:
 
   deploy:
 
-    if: >
-      github.event_name == 'workflow_dispatch' ||
-      github.event.workflow_run.conclusion == 'success'
+    # Uncomment after switching back to workflow_run.
+    #
+    # if: >
+    #   github.event_name == 'workflow_dispatch' ||
+    #   github.event.workflow_run.conclusion == 'success'
 
     runs-on: ubuntu-latest
 
