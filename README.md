@@ -7,142 +7,60 @@ sdk: docker
 app_port: 7860
 pinned: false
 license: mit
-short_description: Fine-Tuned TrOCR CAPTCHA OCR API with FastAPI, MLflow, CI/CD & Hugging Face Deployment
+short_description: Fine Tuned TrOCR CAPTCHA OCR API with FastAPI, CI/CD & MLOps
 ---
 
-# TrOCR CAPTCHA Solver 
+# TrOCR CAPTCHA Solver (MLOps)
 
-![Python](https://img.shields.io/badge/Python-3.11-blue)
-![FastAPI](https://img.shields.io/badge/FastAPI-Production-green)
-![MLflow](https://img.shields.io/badge/MLflow-Registry-blue)
-![Docker](https://img.shields.io/badge/Docker-Ready-blue)
-![License](https://img.shields.io/badge/License-MIT-green)
+Production-grade CAPTCHA OCR system built using Microsoft's TrOCR architecture with a complete MLOps workflow including:
 
-A production-style Optical Character Recognition (OCR) system for CAPTCHA recognition built around Microsoft's TrOCR architecture and a complete end-to-end MLOps workflow.
+- dataset cleaning and splitting
+- training and fine-tuning
+- MLflow model registry
+- automated model evaluation
+- champion/candidate promotion workflow
+- batch inference
+- FastAPI serving
+- Hugging Face deployment support
 
-Unlike a standalone training notebook, this project implements the complete machine learning lifecycle including dataset preparation, model training, experiment tracking, model registry, automated evaluation, champion promotion, production deployment, API serving, monitoring, and CI/CD automation.
-
-The model is fine-tuned from:
+The system fine-tunes:
 
 ```text
 microsoft/trocr-small-printed
 ```
 
-using custom CAPTCHA datasets with an enterprise-inspired deployment workflow built around MLflow and Hugging Face.
-
-
-### Production APISwagger UI
-https://indronel-captcha-solver-api.hf.space/docs
-
-
-### Model Repository
-https://huggingface.co/Indronel/captcha-ocr-model
-
+for CAPTCHA recognition using strong augmentation pipelines and automated benchmarking.
 
 ---
 
-# Production Architecture
+# Features
 
-```text
-                   Raw CAPTCHA Datasets
-                           │
-                           ▼
-                Dataset Cleaning & Validation
-                           │
-                           ▼
-                 Train / Validation / Test Split
-                           │
-                           ▼
-                  TrOCR Fine-tuning Pipeline
-                           │
-                           ▼
-                MLflow Experiment Tracking
-                           │
-                           ▼
-                  MLflow Model Registry
-                           │
-                 Champion / Candidate Aliases
-                           │
-                           ▼
-              Push Champion Model to Hugging Face
-                           │
-                           ▼
-              Hugging Face Model Repository
-                           │
-                           ▼
-              FastAPI Production Inference API
-                           │
-                           ▼
-                    Docker Container
-                           │
-                           ▼
-               Hugging Face Spaces Deployment
-                           │
-                           ▼
-                  Production REST API
-```
+## OCR + Training
 
----
-
-# Project Highlights
-
-## OCR & Training
-
-- Fine-tuned Microsoft TrOCR model for CAPTCHA recognition
-- Automatic dataset cleaning and validation
+- TrOCR fine-tuning for CAPTCHA decoding
 - Multi-dataset training support
-- Albumentations-based augmentation pipeline
-- GPU and CPU support
-- Batch inference utilities
-- Configurable training pipeline
+- Heavy augmentation for robustness
+- Automatic preprocessing pipeline
+- GPU + CPU support
 
 ## MLOps
 
 - MLflow experiment tracking
-- MLflow Model Registry
-- Champion / Candidate model lifecycle
-- Automated evaluation pipeline
-- Model comparison and promotion workflow
-- Dataset lineage
+- MLflow model registry
+- Champion / candidate workflow
+- Automatic benchmark evaluation
+- Automated model promotion
+- Dataset lineage tracking
 - Git metadata logging
-- Versioned model management
-- Reproducible training pipeline
+- Versioned model lifecycle management
 
-## Deployment
+## Inference + Serving
 
-- FastAPI inference service
-- Dockerized deployment
-- Hugging Face Model Hub integration
-- Hugging Face Spaces hosting
-- GitHub Actions CI
-- GitHub Actions CD
-- Automated production deployment
-
-## Monitoring
-
-- Prometheus metrics
-- Grafana dashboard provisioning
-- Request latency monitoring
-- Request count monitoring
-- Health endpoints
-
----
-
-# Technology Stack
-
-| Category | Technologies |
-|----------|--------------|
-| OCR | TrOCR, VisionEncoderDecoderModel |
-| Framework | PyTorch, Transformers |
-| Dataset Processing | Pillow, Albumentations |
-| Experiment Tracking | MLflow |
-| Model Registry | MLflow Registry |
-| Production Model Storage | Hugging Face Model Hub |
-| API | FastAPI |
-| Deployment | Docker, Hugging Face Spaces |
-| CI/CD | GitHub Actions |
-| Monitoring | Prometheus, Grafana |
-| Testing | Pytest |
+- Single image inference
+- Batch prediction
+- FastAPI REST API
+- Hugging Face model loading
+- Alias-based model loading (`champion`, `candidate`)
 
 ---
 
@@ -158,193 +76,136 @@ https://huggingface.co/microsoft/trocr-small-printed
 
 ---
 
-# Production Workflow
-
-The project follows a production-oriented workflow where MLflow manages experimentation while Hugging Face serves as the production model repository.
+# Project Structure
 
 ```text
-Developer
-    │
-    ▼
-Train Model
-    │
-    ▼
-MLflow Tracking
-    │
-    ▼
-Register Candidate
-    │
-    ▼
-Evaluation Pipeline
-    │
-    ▼
-Champion Promotion
-    │
-    ▼
-Push Champion
-    │
-    ▼
-Hugging Face Model Repository
-    │
-    ▼
-FastAPI Startup
-    │
-    ▼
-Download Production Model
-    │
-    ▼
-Serve Predictions
-```
+captcha_solver_mlops/
 
----
-
-# Repository Structure
-
-```text
-captcha-solver-trocr/
-
-├── .github/
-│   └── workflows/
-│       ├── ci.yml
-│       ├── deploy.yml
-│       └── sync_hf.yml
-│
 ├── datasets/
 │   ├── raw/
+│   │   ├── dataset_1/
+│   │   └── dataset_2/
+│   │
 │   ├── train/
 │   ├── val/
 │   └── test/
 │
-├── monitoring/
-│   ├── prometheus.yml
-│   └── grafana/
-│       └── provisioning/
+├── model/
+│   └── trocr_finetuned_captcha_model/
+│       └── v1/
+│
+├── outputs/
+│   └── evaluation_outputs/
+│
+├── cache/
 │
 ├── scripts/
 │   ├── bootstrap_mlflow.py
-│   ├── push_to_hf.py
 │   ├── run_clean_split.py
 │   ├── run_training.py
-│   ├── run_evaluation.py
-│   └── run_inference.py
+│   ├── run_inference.py
+│   └── run_evaluation.py
 │
 ├── src/
 │   ├── api/
+│   │   └── app.py
+│   │
 │   ├── data/
+│   │   └── clean_split.py
+│   │
 │   ├── training/
-│   ├── evaluation/
+│   │   ├── dataset_loader.py
+│   │   ├── preprocess.py
+│   │   ├── trainer.py
+│   │   └── train_pipeline.py
+│   │
 │   ├── inference/
-│   ├── monitoring/
+│   │   ├── model_loader.py
+│   │   ├── predictor.py
+│   │   └── batch_predict.py
+│   │
+│   ├── evaluation/
+│   │   ├── evaluation_pipeline.py
+│   │   ├── evaluator.py
+│   │   ├── metrics.py
+│   │   ├── model_compare.py
+│   │   ├── promote_model.py
+│   │   └── report.py
+│   │
 │   └── config.py
 │
-├── tests/
-│   ├── sample_data/
-│   ├── test_api.py
-│   ├── test_inference.py
-│   └── test_training_smoke.py
+├── mlruns/
+├── mlflow.db
 │
-├── Dockerfile
-├── docker-compose.yml
 ├── requirements.txt
-├── requirements.cpu.txt
-├── LICENSE
-└── README.md
+├── README.md
+├── .env.example
+└── .gitignore
 ```
-
----
-
-# Repository Components
-
-| Directory | Purpose |
-|-----------|---------|
-| `datasets/` | Raw and processed CAPTCHA datasets |
-| `scripts/` | Entry points for each pipeline stage |
-| `src/training` | Model training pipeline |
-| `src/evaluation` | Evaluation, comparison and promotion logic |
-| `src/inference` | Local and production inference |
-| `src/api` | FastAPI application |
-| `src/monitoring` | Prometheus metrics |
-| `monitoring/` | Grafana and Prometheus configuration |
-| `tests/` | Automated test suite |
-| `.github/workflows` | Continuous Integration and Deployment |
 
 ---
 
 # Dataset Format
 
-CAPTCHA labels are derived directly from image filenames.
+CAPTCHA labels are derived directly from filenames.
 
 Example:
 
 ```text
-AB12C.png
+A9K2L.png
 ```
 
 Label:
 
 ```text
-AB12C
+A9K2L
 ```
 
-Example dataset:
+Dataset example:
 
 ```text
 dataset/
-├── AB12C.png
-├── X8Y4P.png
-└── K7LM9.png
+├── A9K2L.png
+├── X2P8T.png
+└── T7Q9D.png
 ```
 
 ---
 
 # Dataset Pipeline
 
+This project follows a strict workflow:
+
 ```text
-Raw Dataset
-      │
-      ▼
-Validation
-      │
-      ▼
-Cleaning
-      │
-      ▼
-Duplicate Removal
-      │
-      ▼
-RGB Conversion
-      │
-      ▼
-PNG Normalization
-      │
-      ▼
-Train / Validation / Test Split
-      │
-      ▼
-Training Pipeline
+RAW DATA
+   ↓
+clean_split.py
+   ↓
+TRAIN / VAL / TEST SPLITS
+   ↓
+TRAINING + EVALUATION
 ```
 
 ---
 
 # Dataset Cleaning & Splitting
 
-Prepare the dataset by running:
+Run:
 
 ```bash
 python scripts/run_clean_split.py
 ```
 
-The preprocessing pipeline automatically:
+Pipeline automatically:
 
-- validates dataset integrity
 - removes corrupted images
 - removes invalid labels
 - removes duplicate labels within datasets
-- converts all images to RGB
-- normalizes images to PNG format
-- generates deterministic train/validation/test splits
+- converts images to RGB
+- normalizes outputs to `.png`
+- creates deterministic train/val/test splits
 
-Output structure:
+Generated structure:
 
 ```text
 datasets/
@@ -355,47 +216,51 @@ datasets/
 
 ---
 
-# Training Pipeline
+# MLflow Setup
 
-The project follows a reproducible training pipeline from dataset preparation through model registration.
+This project uses MLflow for:
 
-```text
-Raw Dataset
-      │
-      ▼
-Clean & Split
-      │
-      ▼
-Dataset Loader
-      │
-      ▼
-Image Preprocessing
-      │
-      ▼
-Albumentations
-      │
-      ▼
-Fine-tune TrOCR
-      │
-      ▼
-Evaluation
-      │
-      ▼
-MLflow Logging
-      │
-      ▼
-Register Candidate
+- experiment tracking
+- model registry
+- model lineage
+- benchmarking
+- promotion workflows
+
+---
+
+# Bootstrap Initial Registry Model
+
+You can either train from scratch (in which case skip this step) or bootstrap an existing model as the first version:
+
+```bash
+python scripts/bootstrap_mlflow.py
 ```
 
-Training automatically:
+This will:
 
-- loads datasets
-- prepares processors
-- applies augmentations
-- fine-tunes the TrOCR model
-- evaluates performance
-- logs metrics and artifacts to MLflow
-- registers the trained model as a Candidate
+- create MLflow experiment
+- register initial model
+- create version `v1`
+- assign `champion` alias
+- initialize registry metadata
+
+---
+
+# Start MLflow UI
+
+```bash
+mlflow ui
+```
+
+Default:
+
+```text
+http://127.0.0.1:5000
+```
+
+---
+
+# Training
 
 Run training:
 
@@ -403,180 +268,92 @@ Run training:
 python scripts/run_training.py
 ```
 
----
+Training pipeline:
 
-# MLflow Integration
-
-MLflow is used as the experiment tracking and model registry layer throughout the training lifecycle.
-
-Implemented features include:
-
-- Experiment tracking
-- Parameter logging
-- Metric logging
-- Artifact logging
-- Model Registry
-- Champion/Candidate aliases
-- Version management
-- Git metadata tracking
-- Model lineage
-- Benchmark history
+- loads current champion model
+- loads datasets
+- applies augmentations
+- fine-tunes TrOCR
+- evaluates on benchmark test set
+- logs metrics to MLflow
+- registers candidate model automatically
 
 ---
 
-# Bootstrap Registry
-
-When starting with an existing fine-tuned checkpoint, bootstrap the registry using:
-
-```bash
-python scripts/bootstrap_mlflow.py
-```
-
-The bootstrap process:
-
-- creates a fresh MLflow experiment
-- initializes the Model Registry
-- registers Version 1
-- assigns the `champion` alias
-- records Git metadata
-- stores registry metadata
-
-This provides an initial production model before subsequent training iterations.
-
----
-
-# MLflow UI
-
-Launch the tracking server:
-
-```bash
-mlflow ui
-```
-
-Default address:
+# Training Workflow
 
 ```text
-http://127.0.0.1:5000
-```
-
-The UI provides access to:
-
-- experiments
-- metrics
-- artifacts
-- registered models
-- model versions
-- aliases
-- lineage
-
----
-
-# Model Lifecycle
-
-The repository implements a Champion / Candidate workflow inspired by production MLOps systems.
-
-```text
-Champion
-     │
-     ▼
+Champion Model
+      ↓
 Fine-tuning
-     │
-     ▼
-Candidate
-     │
-     ▼
-Evaluation
-     │
-     ▼
-Comparison
-     │
-     ▼
+      ↓
+Candidate Model
+      ↓
+Benchmark Evaluation
+      ↓
 Promotion Decision
 ```
 
 ---
 
-# Registry Aliases
+# Model Registry Workflow
 
-| Alias | Description |
-|--------|-------------|
-| `champion` | Current production model |
-| `candidate` | Newly trained model awaiting promotion |
+## Aliases
 
----
-
-# Model Status
-
-During evaluation, model versions move through the following lifecycle:
-
-| Status | Description |
-|---------|-------------|
-| `champion` | Current production model |
-| `candidate` | Newly registered model |
-| `pending_evaluation` | Awaiting benchmark evaluation |
-| `archived` | Previous production model |
-| `rejected` | Candidate failed comparison |
+| Alias     | Purpose                     |
+| ---------- | --------------------------- |
+| champion   | Current production model    |
+| candidate  | Latest trained model        |
 
 ---
 
-# Evaluation Pipeline
+## Lifecycle Tags
 
-Evaluate the latest candidate:
+| Status              | Meaning                     |
+| ------------------- | --------------------------- |
+| champion            | Production model            |
+| pending_evaluation  | Awaiting benchmark testing  |
+| archived            | Older champion              |
+| rejected            | Failed benchmark comparison |
+
+---
+
+# Evaluation
+
+Run evaluation pipeline:
 
 ```bash
 python scripts/run_evaluation.py
 ```
 
-Evaluate a specific model version:
+Or evaluate a specific version:
 
 ```bash
-python scripts/run_evaluation.py <version>
+python scripts/run_evaluation.py 3
 ```
 
-Evaluation pipeline:
-
-```text
-Candidate Model
-       │
-       ▼
-Prediction
-       │
-       ▼
-Metric Computation
-       │
-       ▼
-Champion Comparison
-       │
-       ▼
-Promotion Decision
-```
-
-Pipeline components:
+Pipeline:
 
 ```text
 evaluation_pipeline.py
-        │
-        ▼
+    ↓
 model_compare.py
-        │
-        ▼
+    ↓
 evaluator.py
-        │
-        ▼
+    ↓
 metrics.py
-        │
-        ▼
+    ↓
 promote_model.py
 ```
 
 ---
 
-# Evaluation Metrics
+# Metrics
 
-Each evaluation computes:
+Evaluation computes:
 
-- Character Error Rate (CER)
-- Word Error Rate (WER)
+- CER (Character Error Rate)
+- WER (Word Error Rate)
 - Exact Match Accuracy
 
 Example:
@@ -591,143 +368,30 @@ Example:
 
 ---
 
-# Promotion Strategy
+# Model Promotion Logic
 
-Models are compared using benchmark metrics.
+Models are ranked using:
 
-Primary ranking:
+1. Lowest CER
+2. Highest Accuracy
 
-1. Lowest Character Error Rate (CER)
-2. Highest Exact Match Accuracy
-
-If the candidate outperforms the current production model:
+Best model automatically becomes:
 
 ```text
-Candidate
-      │
-      ▼
-Promoted to Champion
-      │
-      ▼
-Previous Champion Archived
+champion
 ```
 
-Otherwise:
+Older champion becomes:
 
 ```text
-Candidate
-      │
-      ▼
-Rejected
+archived
 ```
-
-This ensures only the best-performing model is promoted to production.
-
----
-
-# Hugging Face Model Synchronization
-
-Once a Champion model is selected, it can be published to the production model repository.
-
-Run:
-
-```bash
-python scripts/push_to_hf.py
-```
-
-The synchronization process:
-
-- retrieves the current Champion from MLflow
-- loads the model and processor
-- authenticates with Hugging Face
-- uploads the production model
-- updates the Hugging Face Model Repository
-
-The uploaded repository contains:
-
-```text
-model.safetensors
-config.json
-generation_config.json
-preprocessor_config.json
-tokenizer.json
-tokenizer_config.json
-special_tokens_map.json
-sentencepiece.bpe.model
-```
-
-This repository acts as the production model source used by the deployed API.
-
----
-
-# Production Model Flow
-
-```text
-Training
-     │
-     ▼
-MLflow Tracking
-     │
-     ▼
-Register Candidate
-     │
-     ▼
-Evaluate
-     │
-     ▼
-Promote Champion
-     │
-     ▼
-Push Champion
-     │
-     ▼
-Hugging Face Model Repository
-```
-
-Unlike embedding models inside the Docker image, the production API downloads the latest production model directly from the Hugging Face Model Repository during application startup, allowing model updates without rebuilding the inference container.
-
----
-
-# Data Augmentation
-
-The training pipeline uses Albumentations to improve robustness against CAPTCHA distortions.
-
-Augmentations include:
-
-- affine transformations
-- optical distortion
-- elastic transforms
-- Gaussian blur
-- Gaussian noise
-- coarse dropout
-- brightness and contrast adjustments
-- hue and saturation modifications
-
-These augmentations improve generalization across varying CAPTCHA styles and noise patterns.
-
----
-
-# Training Configuration
-
-| Parameter | Value |
-|------------|-------|
-| Base Model | `microsoft/trocr-small-printed` |
-| Train Batch Size | 16 |
-| Evaluation Batch Size | 16 |
-| Gradient Accumulation | 2 |
-| Learning Rate | 1.5e-5 |
-| Scheduler | Cosine |
-| Warmup Steps | 500 |
-| Weight Decay | 0.01 |
-| Beam Search | 4 |
-| Maximum Generation Length | 10 |
-| Gradient Checkpointing | Enabled |
 
 ---
 
 # Inference
 
-Run inference on a single image:
+Single image prediction:
 
 ```bash
 python scripts/run_inference.py image.png
@@ -739,40 +403,17 @@ Example:
 python scripts/run_inference.py samples/captcha.png
 ```
 
-Example output:
+Output:
 
 ```text
 AB12C
 ```
 
-The inference pipeline:
-
-```text
-Input Image
-      │
-      ▼
-PIL Image
-      │
-      ▼
-TrOCR Processor
-      │
-      ▼
-VisionEncoderDecoderModel.generate()
-      │
-      ▼
-Tokenizer Decode
-      │
-      ▼
-Predicted CAPTCHA
-```
-
 ---
 
-# Batch Inference
+# Batch Prediction
 
-Batch prediction is supported for evaluating multiple images.
-
-Example:
+Batch inference:
 
 ```python
 from src.inference.batch_predict import batch_predict
@@ -780,74 +421,21 @@ from src.inference.batch_predict import batch_predict
 results = batch_predict("datasets/test/dataset_1")
 ```
 
-This utility processes an entire directory and returns predictions for every image.
-
 ---
 
-# FastAPI Inference API
+# FastAPI Inference Server
 
-The project includes a production-ready FastAPI application for serving predictions.
-
-Run locally:
+Run API:
 
 ```bash
 uvicorn src.api.app:app --reload
 ```
 
-Production Docker deployment uses:
-
-```bash
-uvicorn src.api.app:app \
-    --host 0.0.0.0 \
-    --port 7860
-```
-
-Interactive API documentation:
+Swagger docs:
 
 ```text
 http://127.0.0.1:8000/docs
 ```
-
-Production:
-
-```text
-https://<your-space>.hf.space/docs
-```
-
----
-
-# Application Startup
-
-The FastAPI application uses the lifespan API to initialize the inference service.
-
-Startup sequence:
-
-```text
-Application Startup
-        │
-        ▼
-Validate Environment Variables
-        │
-        ▼
-Authenticate with Hugging Face
-        │
-        ▼
-Download Production Model
-        │
-        ▼
-Load TrOCR Processor
-        │
-        ▼
-Load VisionEncoderDecoderModel
-        │
-        ▼
-Store Objects in app.state
-        │
-        ▼
-Serve Requests
-```
-
-This approach ensures that the production model is loaded once during startup rather than on every request.
 
 ---
 
@@ -859,17 +447,13 @@ This approach ensures that the production model is loaded once during startup ra
 GET /health
 ```
 
-Returns the service health status.
-
 ---
 
-## Model Information
+## Model Info
 
 ```http
 GET /model
 ```
-
-Returns information about the currently loaded production model.
 
 ---
 
@@ -879,331 +463,162 @@ Returns information about the currently loaded production model.
 POST /predict
 ```
 
-Upload a CAPTCHA image using multipart/form-data and receive the predicted text.
-
-Example response:
-
-```json
-{
-    "prediction": "AB12C"
-}
-```
-
----
-
-# Production Deployment
-
-The deployed inference service follows the architecture below.
-
-```text
-Client
-   │
-   ▼
-FastAPI API
-   │
-   ▼
-Hugging Face Authentication
-   │
-   ▼
-Download Champion Model
-   │
-   ▼
-Load TrOCR
-   │
-   ▼
-Prediction
-   │
-   ▼
-JSON Response
-```
-
-The Docker image contains only:
-
-- application source code
-- dependencies
-
-The production model is **not** bundled into the image.
-
-Instead, the application downloads the latest Champion model directly from the Hugging Face Model Repository during startup.
-
-Benefits include:
-
-- smaller Docker images
-- independent model updates
-- version-controlled production models
-- cleaner deployment workflow
+Upload image file and receive prediction.
 
 ---
 
 # Hugging Face Deployment
 
-The project separates model storage from application deployment.
+The API loads models directly from Hugging Face.
 
-## Hugging Face Model Repository
-
-Stores the production model artifacts:
-
-- model weights
-- tokenizer
-- processor
-- configuration
-- generation configuration
-
-The Champion model is uploaded after evaluation using:
-
-```bash
-python scripts/push_to_hf.py
-```
-
----
-
-## Hugging Face Space
-
-Hosts the Dockerized FastAPI application.
-
-During startup the application:
-
-1. authenticates with Hugging Face
-2. downloads the production model
-3. loads the processor
-4. loads the model
-5. begins serving predictions
-
-This architecture allows model updates without rebuilding the deployment container.
-
----
-
-# Environment Variables
-
-## Local Development
+Environment variables:
 
 ```env
 HF_MODEL_ID=your-username/captcha-ocr
-HF_TOKEN=your_huggingface_token
+HF_TOKEN=your_hf_token
 HF_MODEL_REVISION=main
 ```
 
 ---
 
-## Deployment
+# Training Configuration
 
-Additional deployment secret:
-
-```env
-HF_SPACE_ID=your-username/captcha-api
-```
-
----
-
-# Docker
-
-Build locally:
-
-```bash
-docker build -t captcha-ocr-api .
-```
-
-Run:
-
-```bash
-docker run -p 7860:7860 captcha-ocr-api
-```
-
-The Docker image is based on Python 3.11 Slim and is configured for Hugging Face Spaces Docker deployments.
+| Parameter                     | Value                         |
+| ----------------------------- | ----------------------------- |
+| Base Model                    | microsoft/trocr-small-printed |
+| Train Batch Size              | 16                            |
+| Eval Batch Size               | 16                            |
+| Gradient Accumulation         | 2                             |
+| Learning Rate                 | 1.5e-5                        |
+| Scheduler                     | Cosine                        |
+| Warmup Steps                  | 500                           |
+| Weight Decay                  | 0.01                          |
+| Beam Search                   | 4                             |
+| Max Tokens                    | 10                            |
+| Gradient Checkpointing        | Enabled                       |
 
 ---
 
-# Docker Compose
+# Data Augmentation
 
-A local monitoring stack is included.
+Albumentations pipeline includes:
 
-```text
-Docker Compose
-      │
-      ├── OCR API
-      ├── Prometheus
-      └── Grafana
-```
+- affine transforms
+- optical distortion
+- elastic transforms
+- blur
+- Gaussian noise
+- coarse dropout
+- brightness/contrast changes
+- hue/saturation shifts
 
-This enables local observability during development.
-
----
-
-# Monitoring
-
-The FastAPI application exposes Prometheus metrics.
-
-Collected metrics include:
-
-- request count
-- request latency
-- HTTP metrics
-
-Metrics endpoint:
-
-```http
-GET /metrics
-```
-
-Prometheus scrapes the API while Grafana can be configured to visualize collected metrics.
+Designed specifically for CAPTCHA robustness.
 
 ---
 
-# Continuous Integration
-
-GitHub Actions automatically validates every push.
-
-Pipeline:
-
-```text
-Push
-   │
-   ▼
-Checkout Repository
-   │
-   ▼
-Install Dependencies
-   │
-   ▼
-Compile Source
-   │
-   ▼
-Run Tests
-   │
-   ▼
-Docker Build
-```
-
-The CI workflow includes:
-
-- Python environment setup
-- dependency installation
-- source compilation
-- automated tests
-- Docker build verification
-
-Model loading inside tests is mocked, allowing the CI pipeline to execute without downloading production models from Hugging Face.
-
----
-
-# Continuous Deployment
-
-Deployment is automated using GitHub Actions.
-
-Workflow:
-
-```text
-GitHub Push
-      │
-      ▼
-Build Docker Image
-      │
-      ▼
-Synchronize Repository
-      │
-      ▼
-Hugging Face Space
-      │
-      ▼
-Automatic Rebuild
-      │
-      ▼
-Production API
-```
-
-The deployment workflow synchronizes the repository directly to the Hugging Face Space, triggering a rebuild of the production application.
-
----
-
-# Testing
-
-Automated tests cover the primary project components.
-
-Current test suite includes:
-
-```text
-tests/
-├── test_api.py
-├── test_inference.py
-└── test_training_smoke.py
-```
-
-Coverage includes:
-
-- API functionality
-- inference pipeline
-- training smoke tests
-
-To execute locally:
-
-```bash
-pytest tests
-```
-
----
-
-# Hardware Support
+# Hardware
 
 Recommended:
 
-- NVIDIA GPU with CUDA for training
+- NVIDIA GPU with CUDA
 
-Supported:
+Supported fallback:
 
-- CPU inference
-- CPU training
-- Automatic device detection
+- CPU inference/training
 
----
-
-# Project Scripts
-
-| Script | Purpose |
-|----------|---------|
-| `bootstrap_mlflow.py` | Initialize a new MLflow registry |
-| `run_clean_split.py` | Clean and split datasets |
-| `run_training.py` | Train and register Candidate model |
-| `run_evaluation.py` | Evaluate and promote models |
-| `push_to_hf.py` | Upload Champion model to Hugging Face |
-| `run_inference.py` | Single-image inference |
+Automatic device detection included.
 
 ---
 
-# MLOps Principles
+# Environment Setup
 
-This project follows production-inspired MLOps practices including:
+## Create Virtual Environment
 
-- reproducible training
-- modular architecture
+```bash
+python -m venv .venv
+```
+
+Activate:
+
+### Linux / macOS
+
+```bash
+source .venv/bin/activate
+```
+
+### Windows
+
+```bash
+.venv\Scripts\activate
+```
+
+---
+
+# Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+# Important Git Ignore Rules
+
+The following are intentionally excluded from Git:
+
+- datasets
+- trained models
+- MLflow runs
+- MLflow database
+- `.env`
+- caches
+- outputs
+
+This keeps the repository lightweight and production-safe.
+
+---
+
+# Scripts
+
+| Script                     | Purpose                                  |
+| -------------------------- | ---------------------------------------- |
+| bootstrap_mlflow.py        | Initialize MLflow registry               |
+| run_clean_split.py         | Clean and split raw datasets             |
+| run_training.py            | Train and register candidate model       |
+| run_inference.py           | Single image inference                   |
+| run_evaluation.py          | Benchmark and promotion pipeline         |
+
+---
+
+# MLOps Principles Used
+
+This project follows production-grade MLOps practices:
+
 - experiment tracking
-- versioned model registry
+- reproducible training
 - automated evaluation
-- Champion/Candidate lifecycle
-- production model promotion
-- artifact versioning
-- Dockerized deployment
-- CI/CD automation
-- API monitoring
-- production-ready inference
+- model registry workflows
+- dataset lineage tracking
+- modular architecture
+- alias-based deployments
+- versioned model lifecycle management
+- production-ready API serving
 
-The architecture is designed to be easily extended with:
+The architecture is designed for easy extension with:
 
-- Kubernetes deployments
+- Docker
+- CI/CD
+- Kubernetes
+- GPU cloud deployments
 - scheduled retraining
-- automated rollback
-- cloud monitoring
-- GPU inference
-- deployment smoke tests
-- production authentication and rate limiting
+- monitoring systems
 
 ---
 
 # License
 
-This repository fine-tunes Microsoft's TrOCR model.
+This repository uses Microsoft's TrOCR model.
 
-Base model:
+Base model license and details:
 
 https://huggingface.co/microsoft/trocr-small-printed
-
-Please refer to the original model repository for licensing information.
