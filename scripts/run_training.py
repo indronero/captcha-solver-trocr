@@ -1,3 +1,5 @@
+# scripts\run_training.py
+
 import sys
 import os
 

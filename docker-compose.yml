@@ -1,0 +1,30 @@
+services:
+
+  ocr-api:
+    build: .
+    container_name: ocr_api
+    ports:
+      - "8000:8000"
+    environment:
+      HF_MODEL_ID: ${HF_MODEL_ID}
+      HF_TOKEN: ${HF_TOKEN}
+      HF_MODEL_REVISION: ${HF_MODEL_REVISION}
+    restart: unless-stopped
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning
+    restart: unless-stopped

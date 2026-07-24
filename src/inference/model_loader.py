@@ -1,27 +1,49 @@
+# src\inference\model_loader.py
+
 import torch
-from transformers import TrOCRProcessor, VisionEncoderDecoderModel
+import mlflow.transformers
 
-from src.config import MODEL_BASE_DIR
-from src.utils.model_versioning import get_latest_version
+from transformers import (
+    TrOCRProcessor,
+    VisionEncoderDecoderModel
+)
+
+from src.config import REGISTERED_MODEL_NAME
 
 
-def load_model(version=None):
+def load_model(alias="champion", model_uri=None):
 
-    if version is None:
-        model_path = get_latest_version(MODEL_BASE_DIR)
-    else:
-        model_path = f"{MODEL_BASE_DIR}/{version}"
+    if model_uri is None:
 
-    processor = TrOCRProcessor.from_pretrained(model_path)
+        model_uri = (
+            f"models:/{REGISTERED_MODEL_NAME}@{alias}"
+        )
 
-    model = VisionEncoderDecoderModel.from_pretrained(model_path)
+    print("Loading model from MLflow:", model_uri)
+
+    # LOAD TRANSFORMERS MODEL
+    components = mlflow.transformers.load_model(
+        model_uri,
+        return_type="components"
+    )
+
+    # components is dict-like
+    model = components["model"]
+
+    tokenizer = components["tokenizer"]
+
+    image_processor = components["image_processor"]
+
+    # rebuild processor
+    processor = TrOCRProcessor(
+        image_processor=image_processor,
+        tokenizer=tokenizer
+    )
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
     model.to(device)
 
     model.eval()
-
-    print("Loaded model:", model_path)
 
     return model, processor, device

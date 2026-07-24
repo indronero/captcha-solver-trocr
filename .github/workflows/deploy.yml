@@ -1,0 +1,48 @@
+name: Deploy API
+
+on:
+
+  # GitHub only triggers workflow_run when this workflow exists on the default branch.
+  # workflow_run:
+  #   workflows: ["CI"]
+  #   types:
+  #     - completed
+
+  push:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+jobs:
+
+  deploy:
+
+    # Uncomment after switching back to workflow_run.
+    #
+    # if: >
+    #   github.event_name == 'workflow_dispatch' ||
+    #   github.event.workflow_run.conclusion == 'success'
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: true
+
+      - name: Build Docker image
+        run: |
+          docker build -t captcha-ocr-api .
+
+      - name: Sync repository to HF Space
+        uses: huggingface/hub-sync@v0.1.0
+        with:
+          github_repo_id: ${{ github.repository }}
+          huggingface_repo_id: ${{ secrets.HF_SPACE_ID }}
+          hf_token: ${{ secrets.HF_TOKEN }}
+          repo_type: space
+          space_sdk: docker
