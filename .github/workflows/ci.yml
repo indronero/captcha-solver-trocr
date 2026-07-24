@@ -3,7 +3,7 @@ name: CI
 on:
   push:
     branches:
-      - feature/mlops-upgrade
+      - main
 
   pull_request:
 

@@ -10,7 +10,7 @@ on:
 
   push:
     branches:
-      - feature/mlops-upgrade
+      - main
 
   workflow_dispatch:
 
